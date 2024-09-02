@@ -1,6 +1,9 @@
 <script setup>
 
-import {ref} from "vue";
+import {computed, onMounted, ref} from "vue";
+import {useGlobalStore} from "@/stores/GlobalStore.js";
+
+const globalStore = useGlobalStore()
 
 const props = defineProps({
   variant:{
@@ -17,16 +20,22 @@ if(props.variant == "big"){
   height.value = 60
 }else if(props.variant == "meduim"){
   width.value = 36
-  width.value = 36
+  height.value = 36
 }else if(props.variant == "small"){
   width.value = 24
-  width.value = 24
+  height.value = 24
 }
 
+
+const logoTheme = computed(() => {
+  return globalStore.theme === "light"
+      ? "/src/assets/icons/logo-dark.svg"
+      : "/src/assets/icons/logo-light.svg";
+})
 </script>
 
 <template>
-  <img src="../../.././assets/icons/logo.svg" alt="logo" :width="width" :height="height">
+  <img :src="logoTheme" alt="logo" :width="width" :height="height">
 </template>
 
 <style scoped>

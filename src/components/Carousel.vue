@@ -19,7 +19,7 @@ const props = defineProps({
 
 <template>
   <Carousel>
-    <CarouselContent>
+    <CarouselContent class="gap-14">
       <CarouselItem  v-for="movie in movies.results"  class="sm:basis-1/2 md:basis-1/4 lg:basis-1/5 xl:basis-1/6">
         <Item :movie="movie"/>
       </CarouselItem>

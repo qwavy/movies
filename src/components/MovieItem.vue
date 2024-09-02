@@ -11,8 +11,7 @@
 <template>
   <RouterLink :to="`/movie/${movie.id}`" class="card">
     <div class="card-wrapper">
-
-        <img class="card-image" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${movie.poster_path}`"/>
+        <img class="card-image" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${movie.poster_path}`" alt="poster"/>
         <h3 class="card-title">
           {{movie.title}}
         </h3>
@@ -37,13 +36,13 @@
   .card{
     border-radius: 12px;
     width: 160px;
-
   }
   .card-wrapper{
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 20px;
+    max-width: 16rem;
   }
   .card-image{
     border-radius: 12px;

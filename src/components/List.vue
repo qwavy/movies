@@ -22,6 +22,6 @@ const props = defineProps({
   .card-list{
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 20px 10px;
+    gap: 20px 100px;
   }
 </style>
