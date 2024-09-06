@@ -4,6 +4,7 @@ import Login from "@/views/auth/Login.vue";
 import Error404 from "@/views/error404.vue";
 import MainPage from "@/views/MainPage.vue";
 import MoviePage from "@/components/MoviePage.vue";
+import SerialPage from "@/components/series/SerialPage.vue";
 
 
 const routes = [
@@ -22,6 +23,10 @@ const routes = [
     {
         path: "/movie/:id",
         component: MoviePage
+    },
+    {
+        path: "/tv/:id",
+        component: SerialPage
     },
     {
         path:'/:pathMatch(.*)*',

@@ -6,6 +6,9 @@ import {options} from "@/constants/index.js";
 import {useRoute} from "vue-router";
 import {Badge} from "@/components/UI/badge/index.js";
 import {Progress} from "@/components/UI/progress/index.js";
+import {useGlobalStore} from "@/stores/GlobalStore.js";
+import Carousel from "@/components/Carousel.vue";
+import ActorsItem from "@/components/actors/ActorsItem.vue";
 
 const route = useRoute()
 
@@ -14,19 +17,29 @@ const props = defineProps({
 })
 
 const moviePageStore = useMoviePageStore()
+const globalStore = useGlobalStore()
 
 const id = route.params.id
 
 const urlMoviePage = `https://api.themoviedb.org/3/movie/${id}?language=en-US`
+const urlActorsOfMovie = `https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`
 
 onMounted(() => {
   moviePageStore.getMoviePage(urlMoviePage ,options)
+  moviePageStore.getActorsOfMovie(urlActorsOfMovie,options)
+
 })
+setTimeout(() => {
+  console.log(moviePageStore.actorsOfMovie.cast)
+
+},1000)
+
 
 const year  = computed(() => new Date(moviePageStore.movie.release_date).getFullYear())
 
 const rating = computed(() => Number(moviePageStore.movie.vote_average).toFixed(1))
 
+const theme = computed(() => globalStore.theme)
 
 </script>
 
@@ -35,7 +48,7 @@ const rating = computed(() => Number(moviePageStore.movie.vote_average).toFixed(
     <div class="movie-info">
       <img :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${moviePageStore.movie.poster_path}`"/>
       <div class="movie-details">
-        <div>
+        <div class="movie-data">
           <h1 class="title">{{moviePageStore.movie.title}} ({{year}}) </h1>
           <h2 class="sub-title">{{moviePageStore.movie.original_title}}
             <span class="movie-language"> ({{String(moviePageStore.movie.original_language).toUpperCase()}})</span>
@@ -45,7 +58,7 @@ const rating = computed(() => Number(moviePageStore.movie.vote_average).toFixed(
             <p class="overview-content">{{moviePageStore.movie.overview}}</p>
           </div>
           <div class="genres">
-            <Badge variant="outline" v-for="genre in moviePageStore.movie.genres" class="genre">
+            <Badge variant="outline" v-for="genre in moviePageStore.movie.genres" :class="theme === 'light' ? 'genreDark' : 'genreLight'" class="genre">
               {{genre.name}}
             </Badge>
           </div>
@@ -57,12 +70,22 @@ const rating = computed(() => Number(moviePageStore.movie.vote_average).toFixed(
           </span>
           <Progress :model-value="rating"
                     :max="10"
-                    class="text-black"/>
+                    :fillColor="theme === 'light' ? 'text-black' : 'text-white'"
+                    :backgroundColor="theme === 'light' ? 'text-white' : 'text-black'"
+          />
         </div>
       </div>
     </div>
     <div>
-
+      <h2 class="title">info</h2>
+    </div>
+    <div>
+      <h2 class="title pb-5">crew</h2>
+      <Carousel :items="moviePageStore.actorsOfMovie.cast">
+        <template v-slot="{ item }">
+          <ActorsItem :item="item"/>
+        </template>
+      </Carousel>
     </div>
 
   </div>
@@ -73,6 +96,11 @@ const rating = computed(() => Number(moviePageStore.movie.vote_average).toFixed(
   font-size: 30px;
   font-weight: 800;
 }
+.movie-page{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
 .movie-info{
   display: flex;
   gap: 50px;
@@ -80,6 +108,9 @@ const rating = computed(() => Number(moviePageStore.movie.vote_average).toFixed(
 .movie-details{
   display: flex;
   justify-content: space-between;
+}
+.movie-data{
+  width: 60%;
 }
 .movie-rating{
   width: 30%;
@@ -114,7 +145,12 @@ const rating = computed(() => Number(moviePageStore.movie.vote_average).toFixed(
 .genre{
   padding:4px 8px;
   font-size: 14px;
+}
+.genreDark{
   border: 1px solid #000000;
+}
+.genreLight{
+  border: 1px solid #f3f3f3;
 }
 .movie-rating{
   font-size: 30px;

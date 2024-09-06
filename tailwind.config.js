@@ -87,6 +87,9 @@ module.exports = {
         "collapsible-down": "collapsible-down 0.2s ease-in-out",
         "collapsible-up": "collapsible-up 0.2s ease-in-out",
       },
+      flexBasis:{
+        '1/7': "14.2857143%"
+      }
     },
   },
   plugins: [animate],

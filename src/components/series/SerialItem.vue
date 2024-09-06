@@ -1,16 +1,6 @@
 <script setup>
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel'
-import MovieItem from "@/components/MovieItem.vue";
-import {ref} from "vue";
-
 const props = defineProps({
-  items:{
+  item:{
     type:Object,
     required:true
   }
@@ -19,18 +9,30 @@ const props = defineProps({
 </script>
 
 <template>
-  <Carousel>
-    <CarouselContent class="gap-14">
-      <CarouselItem  v-for="item in items"  class="sm:basis-1/2 md:basis-1/4 lg:basis-1/5 xl:basis-1/7">
-        <slot :item="item"/>
-      </CarouselItem>
-    </CarouselContent>
-    <CarouselPrevious />
-    <CarouselNext />
-  </Carousel>
+  <RouterLink :to="`/tv/${item.id}`" class="card">
+    <div class="card-wrapper">
+      <img class="card-image" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${item.poster_path}`" alt="poster"/>
+      <h3 class="card-title">
+        {{item.name}}
+      </h3>
+      <div class="card-content">
+        <div class="card-stars">
+          <img src="@/assets/icons/star.svg" alt="stars">
+          <span class="card-rating">
+              {{item.vote_average.toFixed(1)}}
+            </span>
+        </div>
+        <div class="card-date">
+          {{item.first_air_date}}
+        </div>
+      </div>
+    </div>
+
+  </RouterLink>
+
 </template>
 
-<style>
+<style scoped>
 .card{
   border-radius: 12px;
   width: 160px;

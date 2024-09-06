@@ -7,7 +7,6 @@ export const useGlobalStore = defineStore("globalStore" , {
     actions:{
         setTheme(value){
             this.theme = value
-            console.log(this.theme)
         }
     }
 })

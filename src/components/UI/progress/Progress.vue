@@ -43,7 +43,8 @@ const props = defineProps({
   max: { type: Number, required: false, default: 100 },
   size: { type: Number, required: false, default: 100 }, // Diameter of the circle
   strokeWidth: { type: Number, required: false, default: 8 }, // Thickness of the circle
-  class: { type: String, required: false, default: '' },
+  fillColor: { type: String, required: false, default: '' },
+  backgroundColor: { type: String, required: false, default: '' },
 });
 
 const radius = computed(() => (props.size - props.strokeWidth) / 2);
@@ -54,12 +55,18 @@ const offset = computed(() => {
   return circumference.value - (percentage / 100) * circumference.value;
 });
 
-const circleClasses = computed(() =>
+const backgroundColor = computed(() =>
     cn(
         "transition-all duration-500",
-        props.class
+        props.backgroundColor
     )
 );
+const fillColor = computed(() => {
+  cn(
+      props.fillColor
+  )
+})
+
 </script>
 
 <template>
@@ -70,7 +77,7 @@ const circleClasses = computed(() =>
         :r="radius"
         :stroke-width="props.strokeWidth"
         stroke="currentColor"
-        class="text-gray-200"
+        :class="backgroundColor"
         fill="transparent"
     />
     <circle
@@ -79,7 +86,7 @@ const circleClasses = computed(() =>
         :r="radius"
         :stroke-width="props.strokeWidth"
         stroke="currentColor"
-        :class="circleClasses"
+        :class="fillColor"
         fill="transparent"
         :style="`stroke-dasharray: ${circumference}; stroke-dashoffset: ${offset};`"
     />

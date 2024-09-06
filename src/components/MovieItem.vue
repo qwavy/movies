@@ -1,6 +1,6 @@
 <script setup>
   const props = defineProps({
-    movie:{
+    item:{
       type:Object,
       required:true
     }
@@ -9,21 +9,21 @@
 </script>
 
 <template>
-  <RouterLink :to="`/movie/${movie.id}`" class="card">
+  <RouterLink :to="`/movie/${item.id}`" class="card">
     <div class="card-wrapper">
-        <img class="card-image" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${movie.poster_path}`" alt="poster"/>
+        <img class="card-image" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${item.poster_path}`" alt="poster"/>
         <h3 class="card-title">
-          {{movie.title}}
+          {{item.title}}
         </h3>
         <div class="card-content">
           <div class="card-stars">
             <img src=".././assets/icons/star.svg" alt="stars">
             <span class="card-rating">
-              {{movie.vote_average.toFixed(1)}}
+              {{item.vote_average.toFixed(1)}}
             </span>
           </div>
           <div class="card-date">
-            {{movie.release_date}}
+            {{item.release_date}}
           </div>
         </div>
     </div>

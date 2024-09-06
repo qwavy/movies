@@ -31,7 +31,7 @@ const iconTheme = computed(() => {
 <template>
   <div class="header" v-show="authStore.isAuthed">
     <NavigationMenu>
-      <NavigationMenuList class="flex gap-24">
+      <NavigationMenuList class="flex gap-24 items-center">
         <NavigationMenuItem>
           <RouterLink to="/home" class="cursor-pointer">
             <Logo variant="meduim"/>
@@ -87,9 +87,11 @@ const iconTheme = computed(() => {
   .navbar-item{
     display: flex;
     align-items: center;
-    padding-top: 15px;
     font-size: 18px;
     font-weight: 500;
+  }
+  .navbar-item > span{
+    padding: 0 5px;
   }
   .navbar-content{
     width: 400px;
