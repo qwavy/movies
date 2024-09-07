@@ -1,5 +1,4 @@
 <script setup>
-import MovieItem from "@/components/MovieItem.vue";
 
 const props = defineProps({
   movies: {
@@ -13,7 +12,6 @@ const props = defineProps({
 <template>
   <div v-show="movies">
     <div class="card-list" >
-      <MovieItem :movie="movie" v-for="movie in movies.results"/>
     </div>
   </div>
 </template>

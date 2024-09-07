@@ -3,27 +3,60 @@ const props = defineProps({
   item:{
     type:Object,
     required:true
+  },
+  url:{
+    type:String,
+  },
+  itemId:{
+    type:Number,
+    required:true
+  },
+  itemImage:{
+    type:String,
+    required:true
+  },
+  itemName:{
+    type:String,
+    required:true
+  },
+  itemRating:{
+    type:String,
+  },
+  itemDate:{
+    type:String,
+  },
+  itemCharacter:{
+    type:String,
+  },
+  itemDepartment:{
+    type:String
   }
 })
 
 </script>
 
 <template>
-  <RouterLink :to="`/tv/${item.id}`" class="card">
+  <RouterLink :to="`/${url}/${itemId}`" class="card">
     <div class="card-wrapper">
-      <img class="card-image" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${item.poster_path}`" alt="poster"/>
+      <img class="card-image" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${itemImage}`" alt="poster"/>
       <h3 class="card-title">
-        {{item.name}}
+        {{itemName}}
       </h3>
       <div class="card-content">
-        <div class="card-stars">
+        <div class="card-stars" v-if="itemRating">
           <img src="@/assets/icons/star.svg" alt="stars">
           <span class="card-rating">
-              {{item.vote_average.toFixed(1)}}
+              {{itemRating}}
             </span>
         </div>
-        <div class="card-date">
-          {{item.first_air_date}}
+        <div class="card-character" v-show="itemCharacter">
+          {{itemCharacter}}
+        </div>
+        <div class="card-date" v-show="itemDate">
+          {{itemDate}}
+        </div>
+        <div class="card-department" v-show="itemDepartment">
+          {{itemDepartment}}
         </div>
       </div>
     </div>
@@ -60,6 +93,7 @@ const props = defineProps({
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
 }
 .card-rating{
   font-size: 16px;
@@ -70,6 +104,12 @@ const props = defineProps({
   gap: 4px;
 }
 .card-date{
+  font-size: 16px;
+}
+.card-character{
+  font-size: 16px;
+}
+.card-department{
   font-size: 16px;
 }
 </style>

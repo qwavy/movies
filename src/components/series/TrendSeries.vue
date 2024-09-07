@@ -7,7 +7,7 @@ import {onMounted, ref, watch} from "vue";
 import {useSeriesStore} from "@/stores/SerisStore.js";
 import {options} from "@/constants/index.js";
 import {urlSeriesTheDay,urlSeriesTheWeek} from "@/components/series/constants.js";
-import SerialItem from "@/components/series/SerialItem.vue";
+import Item from "@/components/Item.vue";
 
 const seriesStore = useSeriesStore()
 
@@ -37,14 +37,14 @@ watch(trendingSeriesPeriod , (value,oldValue,onCleanup) => {
       <TabsContent value="seriesToday">
         <Carousel :items="seriesStore.series.results">
           <template v-slot="{ item }">
-            <SerialItem :item="item"/>
+            <Item :item="item" url="tv" :itemId="item.id" :itemImage="item.poster_path" :itemName="item.name" :itemRating="item.vote_average.toFixed(1)" :itemDate="item.first_air_date"/>
           </template>
         </Carousel>
       </TabsContent>
       <TabsContent value="seriesWeek">
         <Carousel :items="seriesStore.series.results">
           <template v-slot="{ item }">
-            <SerialItem :item="item"/>
+            <Item :item="item" url="tv" :itemId="item.id" :itemImage="item.poster_path" :itemName="item.name" :itemRating="item.vote_average.toFixed(1)" :itemDate="item.first_air_date"/>
           </template>
         </Carousel>
       </TabsContent>

@@ -8,7 +8,7 @@ import {Badge} from "@/components/UI/badge/index.js";
 import {Progress} from "@/components/UI/progress/index.js";
 import {useGlobalStore} from "@/stores/GlobalStore.js";
 import Carousel from "@/components/Carousel.vue";
-import ActorsItem from "@/components/actors/ActorsItem.vue";
+import Item from "@/components/Item.vue";
 
 const route = useRoute()
 
@@ -49,10 +49,14 @@ const theme = computed(() => globalStore.theme)
       <img :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${moviePageStore.movie.poster_path}`"/>
       <div class="movie-details">
         <div class="movie-data">
-          <h1 class="title">{{moviePageStore.movie.title}} ({{year}}) </h1>
-          <h2 class="sub-title">{{moviePageStore.movie.original_title}}
-            <span class="movie-language"> ({{String(moviePageStore.movie.original_language).toUpperCase()}})</span>
-          </h2>
+          <div>
+            <h1 class="title">{{moviePageStore.movie.title}} ({{year}}) </h1>
+
+            <h2 class="sub-title">{{moviePageStore.movie.original_title}}
+              <span class="movie-language"> ({{String(moviePageStore.movie.original_language).toUpperCase()}})</span>
+            </h2>
+          </div>
+
           <div class="overview">
             <h2 class="overview-title">overview</h2>
             <p class="overview-content">{{moviePageStore.movie.overview}}</p>
@@ -73,6 +77,7 @@ const theme = computed(() => globalStore.theme)
                     :fillColor="theme === 'light' ? 'text-black' : 'text-white'"
                     :backgroundColor="theme === 'light' ? 'text-white' : 'text-black'"
           />
+
         </div>
       </div>
     </div>
@@ -83,7 +88,7 @@ const theme = computed(() => globalStore.theme)
       <h2 class="title pb-5">crew</h2>
       <Carousel :items="moviePageStore.actorsOfMovie.cast">
         <template v-slot="{ item }">
-          <ActorsItem :item="item"/>
+          <Item :item="item" url="actor" :itemId="item.id" :itemImage="item.profile_path" :itemName="item.name" :itemCharacter="item.character" :itemDepartment="item.known_for_department"/>
         </template>
       </Carousel>
     </div>
@@ -99,7 +104,7 @@ const theme = computed(() => globalStore.theme)
 .movie-page{
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 10px;
 }
 .movie-info{
   display: flex;
@@ -111,6 +116,9 @@ const theme = computed(() => globalStore.theme)
 }
 .movie-data{
   width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 .movie-rating{
   width: 30%;
@@ -124,7 +132,6 @@ const theme = computed(() => globalStore.theme)
   color: gray;
 }
 .overview{
-  padding: 30px 0 10px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -151,6 +158,11 @@ const theme = computed(() => globalStore.theme)
 }
 .genreLight{
   border: 1px solid #f3f3f3;
+}
+.budget{
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
 }
 .movie-rating{
   font-size: 30px;

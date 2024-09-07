@@ -8,7 +8,7 @@ import {options} from "@/constants/index.js";
 
 import {useMoviesStore} from "@/stores/MoviesStore.js";
 import {urlMoviesTheDay, urlMoviesTheWeek} from "@/components/movies/constants.js";
-import MovieItem from "@/components/MovieItem.vue";
+import Item from "@/components/Item.vue";
 
 const movieStore = useMoviesStore()
 
@@ -42,14 +42,14 @@ watch(trendingMoviesPeriod , (value, oldValue, onCleanup) => {
 
         <Carousel :items="movieStore.movies.results">
           <template v-slot="{item}">
-            <MovieItem :item="item"/>
+            <Item :item="item" url="movie" :itemId="item.id" :itemImage="item.poster_path" :itemName="item.title" :itemRating="item.vote_average.toFixed(1)" :itemDate="item.release_date"/>
           </template>
         </Carousel>
       </TabsContent>
       <TabsContent value="moviesWeek">
         <Carousel :items="movieStore.movies.results">
           <template v-slot="{item}">
-            <MovieItem :item="item"/>
+            <Item :item="item" url="movie" :itemId="item.id" :itemImage="item.poster_path" :itemName="item.title" :itemRating="item.vote_average.toFixed(1)" :itemDate="item.release_date"/>
           </template>
         </Carousel>
       </TabsContent>

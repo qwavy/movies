@@ -6,7 +6,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
-import MovieItem from "@/components/MovieItem.vue";
 import {ref} from "vue";
 
 const props = defineProps({
