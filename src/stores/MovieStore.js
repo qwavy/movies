@@ -1,15 +1,21 @@
 import {defineStore} from "pinia";
 import axios from "axios";
 
-import {options} from "@/constants/index.js";
 
-export const useMoviePageStore = defineStore("moviePageStore" , {
+export const useMovieStore = defineStore("moviesStore",{
     state:() => ({
+        movies:[],
         movie:[],
         actorsOfMovie:[],
-        isLoading:false,
+        isLoading:false
     }),
     actions:{
+        async getMovies(url, options){
+            this.isLoading = true
+            const result = await axios.get(url , options)
+            this.movies = result.data
+            this.isLoading = false
+        },
         async getMoviePage(url , options){
             this.isLoading = true
             const result = await axios.get(url , options)
@@ -22,11 +28,5 @@ export const useMoviePageStore = defineStore("moviePageStore" , {
             this.actorsOfMovie = result.data
             this.isLoading = false
         },
-        // async rateTheMovie(url , options){
-        //     this.loading = true
-        //     const result = await axios.post(url , options)
-        //     console.log(result)
-        //     this.loading = false
-        // }
     }
 })

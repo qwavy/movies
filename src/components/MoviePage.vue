@@ -1,7 +1,6 @@
 <script setup>
 
 import {computed, onMounted} from "vue";
-import {useMoviePageStore} from "@/stores/MoviePageStore.js";
 import {options} from "@/constants/index.js";
 import {useRoute} from "vue-router";
 import {Badge} from "@/components/UI/badge/index.js";
@@ -9,6 +8,7 @@ import {Progress} from "@/components/UI/progress/index.js";
 import {useGlobalStore} from "@/stores/GlobalStore.js";
 import Carousel from "@/components/Carousel.vue";
 import Item from "@/components/Item.vue";
+import {useMovieStore} from "@/stores/MovieStore.js";
 
 const route = useRoute()
 
@@ -16,7 +16,8 @@ const props = defineProps({
 
 })
 
-const moviePageStore = useMoviePageStore()
+
+const movieStore = useMovieStore()
 const globalStore = useGlobalStore()
 
 const id = route.params.id
@@ -25,44 +26,44 @@ const urlMoviePage = `https://api.themoviedb.org/3/movie/${id}?language=en-US`
 const urlActorsOfMovie = `https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`
 
 onMounted(() => {
-  moviePageStore.getMoviePage(urlMoviePage ,options)
-  moviePageStore.getActorsOfMovie(urlActorsOfMovie,options)
+  movieStore.getMoviePage(urlMoviePage ,options)
+  movieStore.getActorsOfMovie(urlActorsOfMovie,options)
 
 })
 setTimeout(() => {
-  console.log(moviePageStore.actorsOfMovie.cast)
+  console.log(movieStore.actorsOfMovie.cast)
 
 },1000)
 
 
-const year  = computed(() => new Date(moviePageStore.movie.release_date).getFullYear())
+const year  = computed(() => new Date(movieStore.movie.release_date).getFullYear())
 
-const rating = computed(() => Number(moviePageStore.movie.vote_average).toFixed(1))
+const rating = computed(() => Number(movieStore.movie.vote_average).toFixed(1))
 
 const theme = computed(() => globalStore.theme)
 
 </script>
 
 <template>
-  <div class="movie-page" v-show="moviePageStore.movie">
+  <div class="movie-page" v-show="movieStore.movie">
     <div class="movie-info">
-      <img :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${moviePageStore.movie.poster_path}`"/>
+      <img :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${movieStore.movie.poster_path}`"/>
       <div class="movie-details">
         <div class="movie-data">
           <div>
-            <h1 class="title">{{moviePageStore.movie.title}} ({{year}}) </h1>
+            <h1 class="title">{{movieStore.movie.title}} ({{year}}) </h1>
 
-            <h2 class="sub-title">{{moviePageStore.movie.original_title}}
-              <span class="movie-language"> ({{String(moviePageStore.movie.original_language).toUpperCase()}})</span>
+            <h2 class="sub-title">{{movieStore.movie.original_title}}
+              <span class="movie-language"> ({{String(movieStore.movie.original_language).toUpperCase()}})</span>
             </h2>
           </div>
 
           <div class="overview">
             <h2 class="overview-title">overview</h2>
-            <p class="overview-content">{{moviePageStore.movie.overview}}</p>
+            <p class="overview-content">{{movieStore.movie.overview}}</p>
           </div>
           <div class="genres">
-            <Badge variant="outline" v-for="genre in moviePageStore.movie.genres" :class="theme === 'light' ? 'genreDark' : 'genreLight'" class="genre">
+            <Badge variant="outline" v-for="genre in movieStore.movie.genres" :class="theme === 'light' ? 'genreDark' : 'genreLight'" class="genre">
               {{genre.name}}
             </Badge>
           </div>
@@ -70,7 +71,7 @@ const theme = computed(() => globalStore.theme)
         <div class="movie-rating">
           {{rating }}
           <span class="movie-rating-subtitle">
-            {{moviePageStore.movie.vote_count}} counts of vote
+            {{movieStore.movie.vote_count}} counts of vote
           </span>
           <Progress :model-value="rating"
                     :max="10"
@@ -86,7 +87,7 @@ const theme = computed(() => globalStore.theme)
     </div>
     <div>
       <h2 class="title pb-5">crew</h2>
-      <Carousel :items="moviePageStore.actorsOfMovie.cast">
+      <Carousel :items="movieStore.actorsOfMovie.cast">
         <template v-slot="{ item }">
           <Item :item="item" url="actor" :itemId="item.id" :itemImage="item.profile_path" :itemName="item.name" :itemCharacter="item.character" :itemDepartment="item.known_for_department"/>
         </template>

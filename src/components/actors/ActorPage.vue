@@ -5,6 +5,7 @@
 <template>
   <div class="actor-page">
     <div class="actor-info">
+      
     </div>
     <div class="actor-career">
 

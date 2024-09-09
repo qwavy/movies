@@ -6,11 +6,11 @@ import Carousel from "@/components/Carousel.vue";
 import {onMounted, ref, watch} from "vue";
 import {options} from "@/constants/index.js";
 
-import {useMoviesStore} from "@/stores/MoviesStore.js";
+import {useMovieStore} from "@/stores/MovieStore.js";
 import {urlMoviesTheDay, urlMoviesTheWeek} from "@/components/movies/constants.js";
 import Item from "@/components/Item.vue";
 
-const movieStore = useMoviesStore()
+const movieStore = useMovieStore()
 
 
 const trendingMoviesPeriod = ref("moviesToday")
