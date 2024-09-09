@@ -2,7 +2,6 @@
 
 import {Input} from "@/components/UI/input/index.js";
 import {Button} from "@/components/UI/button/index.js";
-import { toast } from '@/components/ui/toast';
 import {
   FormControl,
   FormDescription,
