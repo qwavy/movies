@@ -28,12 +28,7 @@ const urlActorsOfMovie = `https://api.themoviedb.org/3/movie/${id}/credits?langu
 onMounted(() => {
   movieStore.getMoviePage(urlMoviePage ,options)
   movieStore.getActorsOfMovie(urlActorsOfMovie,options)
-
 })
-setTimeout(() => {
-  console.log(movieStore.actorsOfMovie.cast)
-
-},1000)
 
 
 const year  = computed(() => new Date(movieStore.movie.release_date).getFullYear())
