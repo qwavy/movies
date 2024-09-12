@@ -5,11 +5,17 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
-export function getAgeFromBirthDate(birthDateString) {
-    const birthDay = Date.parse(new Date(birthDateString))
-    const today = Date.parse(new Date())
-    const age = today - birthDay
-    console.log(birthDay)
+export function getAgeFromBirthDate(birthDateString,deathDate = null) {
+    if(deathDate) {
+        const birthDay = new Date(birthDateString).getFullYear()
+        const deathDate = new Date().getFullYear()
+        const age = deathDate - birthDay
 
-    console.log(new Date(age).toString())
+        return age
+    }
+    const birthDay = new Date(birthDateString).getFullYear()
+    const today = new Date().getFullYear()
+    const age = today - birthDay
+
+    return age
 }

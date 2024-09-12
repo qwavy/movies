@@ -9,6 +9,7 @@ export const useActorStore = defineStore("actorStore", {
         async getActor(url,options){
             const result = await axios.get(url , options)
             this.actor = result.data
-        }
+        },
+
     }
 })
