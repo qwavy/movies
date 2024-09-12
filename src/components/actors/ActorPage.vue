@@ -32,12 +32,14 @@ const gender = computed(() => {
   }
 })
 
+setTimeout(() => {
 
-
+console.log(actorStore.actor)
+},1000)
 </script>
 
 <template>
-  <div class="actor-page">
+  <div class="actor-page" >
     <div class="actor-info">
       <div class="actor-image">
         <img :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${actorStore.actor.profile_path}`"/>

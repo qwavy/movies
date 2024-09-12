@@ -19,3 +19,4 @@ export function getAgeFromBirthDate(birthDateString,deathDate = null) {
 
     return age
 }
+
