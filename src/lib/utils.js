@@ -6,19 +6,10 @@ export function cn(...inputs) {
 }
 
 export function getAgeFromBirthDate(birthDateString) {
-  const today = new Date();
-  const birthDate = new Date(
-      birthDateString.substr(0, 4),
-      birthDateString.substr(4, 2) - 1,
-      birthDateString.substr(6)
-);
+    const birthDay = Date.parse(new Date(birthDateString))
+    const today = Date.parse(new Date())
+    const age = today - birthDay
+    console.log(birthDay)
 
-  let age = today.getFullYear() - birthDate.getFullYear();
-
-  if (today.getMonth() < birthDate.getMonth() ||
-      (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())) {
-    age--;
-  }
-
-  return age;
+    console.log(new Date(age).toString())
 }

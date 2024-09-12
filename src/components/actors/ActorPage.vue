@@ -13,15 +13,25 @@ const id = route.params.id
 
 const actorStore = useActorStore()
 
-
-
 const urlActorPage = `https://api.themoviedb.org/3/person/${id}?language=en-US`
-
-const age = computed(() => getAgeFromBirthDate(actorStore.actor.birthday))
 
 onMounted(() => {
   actorStore.getActor(urlActorPage,options)
+
 })
+
+setTimeout(() => {
+
+const age = computed(() => getAgeFromBirthDate(actorStore.actor.birthday))
+
+  console.log(age.value)
+},1000)
+
+
+
+// const age = computed(() => getAgeFromBirthDate(actorStore.actor.birthday))
+
+
 </script>
 
 <template>
