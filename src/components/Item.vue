@@ -1,40 +1,42 @@
 <script setup>
-import {ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 const props = defineProps({
   item:{
     type:Object,
     required:true
   },
-  url:{
-    type:String,
-  },
-  itemId:{
-    type:Number,
-    required:true
-  },
-  itemImage:{
-    type:String,
-    required:true
-  },
-  itemName:{
-    type:String,
-    required:true
-  },
-  itemRating:{
-    type:Number,
-  },
-  itemDate:{
-    type:String,
-  },
-  itemCharacter:{
-    type:String,
-  },
-  itemDepartment:{
-    type:String
+})
+
+const itemInfo = ref({
+
+})
+
+
+
+onMounted(() => {
+  if(props.item.media_type === "movie"){
+    itemInfo.value = {
+      url:"movie",
+      itemId: props.item.id,
+      itemName: props.item.title,
+      itemImage: props.item.poster_path,
+      itemRating: props.item.vote_average.toFixed(1),
+      itemDate: props.item.release_date
+    }
+  }else if(props.item.media_type === "tv"){
+    itemInfo.value = {
+      url:"movie",
+      itemId: props.item.id,
+      itemName: props.item.name,
+      itemImage: props.item.poster_path,
+      itemRating: props.item.vote_average.toFixed(1),
+      itemDate: props.item.first_air_date
+    }
   }
 })
 
-const image = ref(`https://image.tmdb.org/t/p/w300_and_h450_bestv2${props.itemImage}`)
+
+const image = ref(`https://image.tmdb.org/t/p/w300_and_h450_bestv2${itemInfo.value.itemImage}`)
 
 const alternativeImage = () => {
   image.value = "https://themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg"
@@ -43,28 +45,28 @@ const alternativeImage = () => {
 </script>
 
 <template>
-  <RouterLink :to="`/${url}/${itemId}`" class="card">
+  <RouterLink :to="`/${itemInfo.url}/${itemInfo.itemId}`" class="card">
     <div class="card-wrapper">
       <img class="card-image" :src="image"  @error="alternativeImage"/>
 <!--      <img class="card-image" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${itemImage}`"  @error="alternativeImage"/>-->
       <h3 class="card-title">
-        {{itemName}}
+        {{itemInfo.itemName}}
       </h3>
       <div class="card-content">
-        <div class="card-stars" v-if="itemRating">
+        <div class="card-stars" v-if="itemInfo.itemRating">
           <img src="@/assets/icons/star.svg" alt="stars">
           <span class="card-rating">
-              {{itemRating}}
+              {{itemInfo.itemRating}}
             </span>
         </div>
-        <div class="card-character" v-show="itemCharacter">
-          {{itemCharacter}}
+        <div class="card-character" v-show="itemInfo.itemCharacter">
+          {{itemInfo.itemCharacter}}
         </div>
-        <div class="card-date" v-show="itemDate">
-          {{itemDate}}
+        <div class="card-date" v-show="itemInfo.itemDate">
+          {{itemInfo.itemDate}}
         </div>
-        <div class="card-department" v-show="itemDepartment">
-          {{itemDepartment}}
+        <div class="card-department" v-show="itemInfo.itemDepartment">
+          {{itemInfo.itemDepartment}}
         </div>
       </div>
     </div>

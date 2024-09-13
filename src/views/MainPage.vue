@@ -1,6 +1,4 @@
 <script setup>
-import TrendSeries from "@/components/series/TrendSeries.vue";
-import TrendMovies from "@/components/movies/TrendMovies.vue";
 import Trending from "@/components/Trending.vue";
 import {useMovieStore} from "@/stores/MovieStore.js";
 import {urlMoviesTheDay, urlMoviesTheWeek} from "@/components/movies/constants.js";
@@ -17,7 +15,13 @@ onMounted(() => {
 
   seriesStore.getSeriesDay(options)
   seriesStore.getSeriesWeek(options)
+
 })
+
+const movieInfo = {
+  url:"movie",
+  // itemId:
+}
 
 
 </script>

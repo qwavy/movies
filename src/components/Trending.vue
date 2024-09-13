@@ -11,7 +11,7 @@ import {options} from "@/constants/index.js";
 
 const props = defineProps({
   itemsOfTheDay:Object,
-  itemsOfTheWeek:Object
+  itemsOfTheWeek:Object,
 })
 
 const trendingPeriod = ref("today")
@@ -29,14 +29,14 @@ const trendingPeriod = ref("today")
       <TabsContent value="today">
         <Carousel :items="itemsOfTheDay.results">
           <template v-slot="{item}">
-            <Item :item="item" url="movie" :itemId="item.id" :itemImage="item.poster_path" :itemName="item.title" :itemRating="item.vote_average" :itemDate="item.release_date"/>
+            <Item :item="item"/>
           </template>
         </Carousel>
       </TabsContent>
       <TabsContent value="week">
         <Carousel :items="itemsOfTheWeek.results">
           <template v-slot="{item}">
-            <Item :item="item" url="movie" :itemId="item.id" :itemImage="item.poster_path" :itemName="item.title" :itemRating="item.vote_average.toFixed(1)" :itemDate="item.release_date"/>
+            <Item :item="item"/>
           </template>
         </Carousel>
       </TabsContent>
