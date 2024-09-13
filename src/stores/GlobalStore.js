@@ -2,7 +2,7 @@ import {defineStore} from "pinia";
 
 export const useGlobalStore = defineStore("globalStore" , {
     state: () => ({
-        theme:"light"
+        theme:"light",
     }),
     actions:{
         setTheme(value){

@@ -21,7 +21,7 @@ const props = defineProps({
     required:true
   },
   itemRating:{
-    type:String,
+    type:Number,
   },
   itemDate:{
     type:String,

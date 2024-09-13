@@ -11,12 +11,9 @@ import {urlMoviesTheDay, urlMoviesTheWeek} from "@/components/movies/constants.j
 import Item from "@/components/Item.vue";
 
 const movieStore = useMovieStore()
-
-
 const trendingMoviesPeriod = ref("moviesToday")
-
-
 onMounted(() => {
+
   movieStore.getMovies(urlMoviesTheDay, options)
 })
 
@@ -39,7 +36,6 @@ watch(trendingMoviesPeriod , (value, oldValue, onCleanup) => {
         <TabsTrigger value="moviesWeek" class="tabs-switcher">week</TabsTrigger>
       </TabsList>
       <TabsContent value="moviesToday">
-
         <Carousel :items="movieStore.movies.results">
           <template v-slot="{item}">
             <Item :item="item" url="movie" :itemId="item.id" :itemImage="item.poster_path" :itemName="item.title" :itemRating="item.vote_average.toFixed(1)" :itemDate="item.release_date"/>

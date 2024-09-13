@@ -1,13 +1,30 @@
 <script setup>
 import TrendSeries from "@/components/series/TrendSeries.vue";
 import TrendMovies from "@/components/movies/TrendMovies.vue";
+import Trending from "@/components/Trending.vue";
+import {useMovieStore} from "@/stores/MovieStore.js";
+import {urlMoviesTheDay, urlMoviesTheWeek} from "@/components/movies/constants.js";
+import {options} from "@/constants/index.js";
+import {onMounted} from "vue";
+import {useSeriesStore} from "@/stores/SerisStore.js";
 
-localStorage.setItem('bearerToken','eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1YmM1OWJkNDI3NmM5ZGE5ZDQwZGEzZjI4OTkzNTFiMCIsIm5iZiI6MTcyNTgyNTc1Mi40ODQ3NCwic3ViIjoiNjZjZjkxNWVlMDJhYzAzMzUxNzIyYmExIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.VOYjilYRcEld2k1tvCPYZVkBY3gmHEiyAl5o_N4tGP8')
+const movieStore = useMovieStore()
+const seriesStore = useSeriesStore()
+
+onMounted(() => {
+  movieStore.getMoviesDay(options)
+  movieStore.getMoviesWeek(options)
+
+  seriesStore.getSeriesDay(options)
+  seriesStore.getSeriesWeek(options)
+})
+
+
 </script>
 
 <template>
-  <TrendMovies/>
-  <TrendSeries/>
+  <Trending :itemsOfTheDay="movieStore.trendingMoviesOfTheDay" :itemsOfTheWeek="movieStore.trendingMoviesOfTheWeek"/>
+  <Trending :itemsOfTheDay="seriesStore.trendingSeriesOfTheDay" :itemsOfTheWeek="seriesStore.trendingSeriesOfTheWeek"/>
   <section>
     <h2 class="movies-title">trend movies</h2>
   </section>
