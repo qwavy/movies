@@ -24,7 +24,6 @@ export function getAgeFromBirthDate(birthDateString,deathDate = null) {
 export async function fetchData(store, url, options, dataKey){
     try{
         const result = await axios.get(url,options)
-        console.log(result)
         store[dataKey] = result.data
     }catch (e){
         console.log(e)

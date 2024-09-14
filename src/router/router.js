@@ -30,7 +30,7 @@ const routes = [
         component: SerialPage
     },
     {
-        path: "/actor/:id",
+        path: "/person/:id",
         component: ActorPage
     },
     {

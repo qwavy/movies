@@ -10,6 +10,7 @@ const props = defineProps({
 const itemInfo = ref({
 
 })
+const image = ref()
 
 
 
@@ -33,10 +34,23 @@ onMounted(() => {
       itemDate: props.item.first_air_date
     }
   }
+  if(props.item.known_for_department){
+    itemInfo.value = {
+      url:"person",
+      itemId: props.item.id,
+      itemName: props.item.original_name,
+      itemImage: props.item.profile_path,
+      itemCharacter:props.item.character,
+      itemDepartment: props.item.known_for_department
+    }
+  }
+  image.value = `https://image.tmdb.org/t/p/w300_and_h450_bestv2${itemInfo.value.itemImage}`
+
 })
 
 
-const image = ref(`https://image.tmdb.org/t/p/w300_and_h450_bestv2${itemInfo.value.itemImage}`)
+
+
 
 const alternativeImage = () => {
   image.value = "https://themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg"
@@ -45,7 +59,7 @@ const alternativeImage = () => {
 </script>
 
 <template>
-  <RouterLink :to="`/${itemInfo.url}/${itemInfo.itemId}`" class="card">
+  <RouterLink :to="`/${itemInfo.url}/${itemInfo.itemId}`" class="card" >
     <div class="card-wrapper">
       <img class="card-image" :src="image"  @error="alternativeImage"/>
 <!--      <img class="card-image" :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${itemImage}`"  @error="alternativeImage"/>-->

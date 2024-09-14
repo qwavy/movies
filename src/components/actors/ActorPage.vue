@@ -32,10 +32,7 @@ const gender = computed(() => {
   }
 })
 
-setTimeout(() => {
 
-console.log(actorStore.actor)
-},1000)
 </script>
 
 <template>

@@ -39,6 +39,7 @@ export const useMovieStore = defineStore("moviesStore",{
             this.isLoading = true
             const result = await axios.get(url,options)
             this.actorsOfMovie = result.data
+            console.log(this.actorsOfMovie.id)
             this.isLoading = false
         },
     }
