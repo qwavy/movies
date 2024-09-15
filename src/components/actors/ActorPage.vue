@@ -6,7 +6,8 @@ import {useActorStore} from "@/stores/ActorStore.js";
 import {useRoute} from "vue-router";
 import {options} from "@/constants/index.js";
 import {getAgeFromBirthDate} from "@/lib/utils.js";
-
+import {Carousel} from "@/components/UI/carousel/index.js";
+import Item from "@/components/Item.vue";
 const route = useRoute()
 
 const id = route.params.id
@@ -14,13 +15,17 @@ const id = route.params.id
 const actorStore = useActorStore()
 
 const urlActorPage = `https://api.themoviedb.org/3/person/${id}?language=en-US`
+const urlMoviesPerson = `https://api.themoviedb.org/3/person/${id}/movie_credits?language=en-US`
 
 onMounted(() => {
   actorStore.getActor(urlActorPage,options)
-
-
+  actorStore.getMoviesPerson(urlMoviesPerson,options)
 })
 
+setTimeout(() => {
+  console.log(actorStore.moviesPerson.cast)
+
+},1000)
 
 const age = computed(() => getAgeFromBirthDate(actorStore.actor.birthday))
 
@@ -49,7 +54,7 @@ const gender = computed(() => {
           <h3 class="personal-info-title">
             Known for
           </h3>
-          <p class="personal-info-description">
+          <p class="description">
             {{actorStore.actor.known_for_department}}
           </p>
         </div>
@@ -57,7 +62,7 @@ const gender = computed(() => {
           <h3 class="personal-info-title">
             Age
           </h3>
-          <p class="personal-info-description">
+          <p class="description">
             {{actorStore.actor.birthday}}
             ({{age}} age)
           </p>
@@ -66,7 +71,7 @@ const gender = computed(() => {
           <h3 class="personal-info-title">
             Age
           </h3>
-          <p class="personal-info-description">
+          <p class="description">
             {{actorStore.actor.birthday}}
             ({{age}} age)
           </p>
@@ -75,7 +80,7 @@ const gender = computed(() => {
           <h3 class="personal-info-title">
             Gender
           </h3>
-          <p class="personal-info-description">
+          <p class="description">
             {{gender}}
           </p>
         </div>
@@ -83,7 +88,7 @@ const gender = computed(() => {
           <h3 class="personal-info-title">
             Place of birth
           </h3>
-          <p class="personal-info-description">
+          <p class="description">
             {{actorStore.actor.place_of_birth}}
           </p>
         </div>
@@ -91,7 +96,7 @@ const gender = computed(() => {
           <h3 class="personal-info-title">
             Also known as
           </h3>
-          <p class="personal-info-description" v-for="name in actorStore.actor.also_known_as">
+          <p class="description" v-for="name in actorStore.actor.also_known_as">
             {{name}}
           </p>
         </div>
@@ -101,7 +106,15 @@ const gender = computed(() => {
         <h1 class="title">{{actorStore.actor.name}}</h1>
         <div class="actor-career-bio">
           <h2 class="sub-title">Bio</h2>
-          <p>{{actorStore.actor.biography}}</p>
+          <p class="description">{{actorStore.actor.biography}}</p>
+        </div>
+        <div>
+          <h2 class="sub-title">Movies</h2>
+          <Carousel :items="actorStore.moviesPerson.cast">
+            <template v-slot="{ item }">
+              <Item :item="item"/>
+            </template>
+          </Carousel>
         </div>
     </div>
   </div>
@@ -120,6 +133,7 @@ const gender = computed(() => {
     display: flex;
     flex-direction: column;
     gap: 40px;
+    min-width: 20%;
   }
   .actor-personal-info{
     display: flex;
@@ -134,8 +148,9 @@ const gender = computed(() => {
     font-size: 16px;
     font-weight: 600;
   }
-  .personal-info-description{
+  .description{
     font-size: 16px;
     font-weight: 400;
   }
+  .person-bio{}
 </style>

@@ -12,10 +12,12 @@ const itemInfo = ref({
 })
 const image = ref()
 
-
+setTimeout(() => {
+  console.log(props.item)
+},1000)
 
 onMounted(() => {
-  if(props.item.media_type === "movie"){
+  if(props.item?.media_type === "movie" ){
     itemInfo.value = {
       url:"movie",
       itemId: props.item.id,
@@ -24,7 +26,7 @@ onMounted(() => {
       itemRating: props.item.vote_average.toFixed(1),
       itemDate: props.item.release_date
     }
-  }else if(props.item.media_type === "tv"){
+  }else if(props.item?.media_type === "tv"){
     itemInfo.value = {
       url:"movie",
       itemId: props.item.id,
@@ -34,7 +36,7 @@ onMounted(() => {
       itemDate: props.item.first_air_date
     }
   }
-  if(props.item.known_for_department){
+  if(props.item?.known_for_department){
     itemInfo.value = {
       url:"person",
       itemId: props.item.id,
@@ -43,6 +45,7 @@ onMounted(() => {
       itemCharacter:props.item.character,
       itemDepartment: props.item.known_for_department
     }
+  }else {
   }
   image.value = `https://image.tmdb.org/t/p/w300_and_h450_bestv2${itemInfo.value.itemImage}`
 

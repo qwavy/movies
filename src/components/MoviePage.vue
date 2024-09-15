@@ -84,7 +84,7 @@ const theme = computed(() => globalStore.theme)
       <h2 class="title pb-5">crew</h2>
       <Carousel :items="movieStore.actorsOfMovie.cast">
         <template v-slot="{ item }">
-          <Item :item="item" url="actor" :itemId="item.id" :itemImage="item.profile_path" :itemName="item.name" :itemCharacter="item.character" :itemDepartment="item.known_for_department"/>
+          <Item :item="item" />
         </template>
       </Carousel>
     </div>
