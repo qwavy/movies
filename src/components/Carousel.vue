@@ -6,7 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
-import {ref} from "vue";
+import {ref, toRefs} from "vue";
 
 const props = defineProps({
   items:{
@@ -14,6 +14,8 @@ const props = defineProps({
     required:true
   }
 })
+
+const {items} = toRefs(props)
 
 </script>
 

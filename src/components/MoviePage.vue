@@ -1,6 +1,6 @@
 <script setup>
 
-import {computed, onMounted} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {options} from "@/constants/index.js";
 import {useRoute} from "vue-router";
 import {Badge} from "@/components/UI/badge/index.js";
@@ -10,24 +10,32 @@ import Carousel from "@/components/Carousel.vue";
 import Item from "@/components/Item.vue";
 import {useMovieStore} from "@/stores/MovieStore.js";
 
+
 const route = useRoute()
 
 const props = defineProps({
 
 })
+const id = ref(route.params.id)
 
 
 const movieStore = useMovieStore()
 const globalStore = useGlobalStore()
 
-const id = route.params.id
 
-const urlMoviePage = `https://api.themoviedb.org/3/movie/${id}?language=en-US`
-const urlActorsOfMovie = `https://api.themoviedb.org/3/movie/${id}/credits?language=en-US`
+const urlMoviePage = `https://api.themoviedb.org/3/movie/${id.value}?language=en-US`
+const urlActorsOfMovie = `https://api.themoviedb.org/3/movie/${id.value}/credits?language=en-US`
 
-onMounted(() => {
-  movieStore.getMoviePage(urlMoviePage ,options)
-  movieStore.getActorsOfMovie(urlActorsOfMovie,options)
+onMounted(async () => {
+  await movieStore.getMoviePage(urlMoviePage ,options)
+  await movieStore.getActorsOfMovie(urlActorsOfMovie,options)
+})
+watch(id,async (value, oldValue, onCleanup) => {
+
+  if(value !== oldValue){
+    console.log("change")
+    await movieStore.getActorsOfMovie(urlActorsOfMovie,options)
+  }
 })
 
 
@@ -42,7 +50,7 @@ const theme = computed(() => globalStore.theme)
 <template>
   <div class="movie-page" v-show="movieStore.movie">
     <div class="movie-info">
-      <img :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${movieStore.movie.poster_path}`"/>
+      <img :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${movieStore.movie.poster_path}`" class="movie-image"/>
       <div class="movie-details">
         <div class="movie-data">
           <div>
@@ -82,7 +90,7 @@ const theme = computed(() => globalStore.theme)
     </div>
     <div>
       <h2 class="title pb-5">crew</h2>
-      <Carousel :items="movieStore.actorsOfMovie.cast">
+      <Carousel :items="movieStore.actorsOfMovie">
         <template v-slot="{ item }">
           <Item :item="item" />
         </template>
@@ -167,5 +175,15 @@ const theme = computed(() => globalStore.theme)
   font-size: 15px;
   color: gray;
   padding-bottom: 10px;
+}
+@media (max-width: 1024px) {
+  .movie-info{
+    display: flex;
+    flex-direction: column;
+  }
+  .movie-image{
+    height: 450px;
+    width: 300px;
+  }
 }
 </style>

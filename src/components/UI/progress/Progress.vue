@@ -39,7 +39,7 @@ import { computed } from "vue";
 import { cn } from "@/lib/utils";
 
 const props = defineProps({
-  modelValue: { type: [Number, null], required: false, default: 0 },
+  modelValue: { type: [String, null], required: false, default: 0 },
   max: { type: Number, required: false, default: 100 },
   size: { type: Number, required: false, default: 100 }, // Diameter of the circle
   strokeWidth: { type: Number, required: false, default: 8 }, // Thickness of the circle

@@ -29,18 +29,18 @@ export const useMovieStore = defineStore("moviesStore",{
         async getMoviesWeek(options){
             await fetchData(this, this.apiUrls.urlMoviesTheWeek , options, "trendingMoviesOfTheWeek")
         },
+        async getActorsOfMovie(url,options){
+            this.isLoading = true
+            const result = await axios.get(url,options)
+            this.actorsOfMovie = result.data.cast
+            this.isLoading = false
+        },
         async getMoviePage(url , options){
             this.isLoading = true
             const result = await axios.get(url , options)
             this.movie = result.data
             this.isLoading = false
         },
-        async getActorsOfMovie(url,options){
-            this.isLoading = true
-            const result = await axios.get(url,options)
-            this.actorsOfMovie = result.data
-            console.log(this.actorsOfMovie.id)
-            this.isLoading = false
-        },
     }
+
 })

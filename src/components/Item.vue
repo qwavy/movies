@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref, watch} from "vue";
+import {nextTick, onMounted, reactive, ref, toRefs, watch,watchEffect} from "vue";
 const props = defineProps({
   item:{
     type:Object,
@@ -7,49 +7,63 @@ const props = defineProps({
   },
 })
 
-const itemInfo = ref({
-
+const itemInfo = reactive({
+  // url: '',
+  // itemId: '',
+  // itemName: '',
+  // itemImage: '',
+  // itemRating: '',
+  // itemDate: ''
 })
+const {item} = toRefs(props)
+console.log(item.value)
 const image = ref()
 
-setTimeout(() => {
-  console.log(props.item)
-},1000)
 
-onMounted(() => {
-  if(props.item?.media_type === "movie" ){
-    itemInfo.value = {
+const updateItemInfo = () => {
+  if(item.value?.media_type === "movie" ){
+    Object.assign( itemInfo, {
       url:"movie",
       itemId: props.item.id,
       itemName: props.item.title,
       itemImage: props.item.poster_path,
       itemRating: props.item.vote_average.toFixed(1),
       itemDate: props.item.release_date
-    }
-  }else if(props.item?.media_type === "tv"){
-    itemInfo.value = {
+    })
+  }else if(item.value?.media_type === "tv"){
+    Object.assign( itemInfo, {
       url:"movie",
       itemId: props.item.id,
       itemName: props.item.name,
       itemImage: props.item.poster_path,
       itemRating: props.item.vote_average.toFixed(1),
       itemDate: props.item.first_air_date
-    }
+    })
   }
-  if(props.item?.known_for_department){
-    itemInfo.value = {
+  if(item.value?.known_for_department){
+    Object.assign( itemInfo,  {
       url:"person",
       itemId: props.item.id,
       itemName: props.item.original_name,
       itemImage: props.item.profile_path,
       itemCharacter:props.item.character,
       itemDepartment: props.item.known_for_department
-    }
-  }else {
+    })
+  }else if(item.value?.character){
+    Object.assign( itemInfo, {
+      url:"movie",
+      itemId: props.item.id,
+      itemName: props.item.title,
+      itemImage: props.item.poster_path,
+      itemRating: props.item.vote_average.toFixed(1),
+      itemDate: props.item.release_date
+    })
   }
-  image.value = `https://image.tmdb.org/t/p/w300_and_h450_bestv2${itemInfo.value.itemImage}`
-
-})
+  image.value = `https://image.tmdb.org/t/p/w300_and_h450_bestv2${itemInfo.itemImage}`
+}
+watchEffect(() => {
+  updateItemInfo();
+});
 
 
 

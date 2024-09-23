@@ -6,7 +6,8 @@ import {useActorStore} from "@/stores/ActorStore.js";
 import {useRoute} from "vue-router";
 import {options} from "@/constants/index.js";
 import {getAgeFromBirthDate} from "@/lib/utils.js";
-import {Carousel} from "@/components/UI/carousel/index.js";
+import Carousel from "@/components/Carousel.vue";
+
 import Item from "@/components/Item.vue";
 const route = useRoute()
 
