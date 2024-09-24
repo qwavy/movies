@@ -8,15 +8,8 @@ const props = defineProps({
 })
 
 const itemInfo = reactive({
-  // url: '',
-  // itemId: '',
-  // itemName: '',
-  // itemImage: '',
-  // itemRating: '',
-  // itemDate: ''
 })
 const {item} = toRefs(props)
-console.log(item.value)
 const image = ref()
 
 
@@ -63,7 +56,7 @@ const updateItemInfo = () => {
 }
 watchEffect(() => {
   updateItemInfo();
-});
+})
 
 
 
