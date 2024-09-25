@@ -6,6 +6,7 @@ import MainPage from "@/views/MainPage.vue";
 import MoviePage from "@/components/MoviePage.vue";
 import SerialPage from "@/components/series/SerialPage.vue";
 import ActorPage from "@/components/actors/ActorPage.vue";
+import MoviesList from "@/components/movies/MoviesList.vue";
 
 
 const routes = [
@@ -20,6 +21,10 @@ const routes = [
     {
         path: "/home",
         component: MainPage
+    },
+    {
+        path: "/movies",
+        component: MoviesList
     },
     {
         path: "/movie/:id",

@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import axios from "axios";
 import {fetchData} from "@/lib/utils.js";
-
+import {options} from "@/constants/index.js";
 
 export const useMovieStore = defineStore("moviesStore",{
     state:() => ({
@@ -12,16 +12,16 @@ export const useMovieStore = defineStore("moviesStore",{
         actorsOfMovie:[],
         isLoading:false,
         apiUrls:{
+            urlMovies:"https://api.themoviedb.org/3/discover/movie",
             urlMoviesTheDay:"https://api.themoviedb.org/3/trending/movie/day?language=en-US",
             urlMoviesTheWeek:"https://api.themoviedb.org/3/trending/movie/week?language=en-US"
-        }
+        },
+        pickedFilterGenres:[
+        ]
     }),
     actions:{
-        async getMovies(url, options){
-            this.isLoading = true
-            const result = await axios.get(url , options)
-            this.movies = result.data
-            this.isLoading = false
+        async getMovies(){
+            await fetchData(this, this.apiUrls.urlMoviesTheDay , options, "movies")
         },
         async getMoviesDay(options){
             await fetchData(this, this.apiUrls.urlMoviesTheDay , options, "trendingMoviesOfTheDay")
@@ -41,6 +41,15 @@ export const useMovieStore = defineStore("moviesStore",{
             this.movie = result.data
             this.isLoading = false
         },
+        setPickedFilterGenres(genre){
+            if(this.pickedFilterGenres.includes(genre)){
+                return
+            }
+            this.pickedFilterGenres.push(genre)
+        },
+        deletePickedFilterGenre(genre){
+            this.pickedFilterGenres = this.pickedFilterGenres.filter((el) => el !== genre)
+        }
     }
 
 })

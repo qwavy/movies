@@ -9,7 +9,13 @@ const props = defineProps({
 </script>
 
 <template>
-  <div :class="cn(badgeVariants({ variant }), props.class)">
+  <div :class="cn(badgeVariants({ variant }), props.class)" class="badge">
     <slot />
   </div>
 </template>
+<style scoped>
+.badge{
+  padding:4px 8px;
+  font-size: 14px;
+}
+</style>
