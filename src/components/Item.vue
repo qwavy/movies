@@ -1,5 +1,5 @@
 <script setup>
-import {nextTick, onMounted, reactive, ref, toRefs, watch,watchEffect} from "vue";
+import {computed, nextTick, onMounted, reactive, ref, toRefs, watch, watchEffect} from "vue";
 const props = defineProps({
   item:{
     type:Object,
@@ -59,6 +59,18 @@ watchEffect(() => {
 })
 
 
+const cardRatingClass = computed(() => {
+  if(itemInfo.itemRating >= 7){
+    return "greenRatingClass"
+  }
+  if(itemInfo.itemRating >= 5){
+    return "yellowRatingClass"
+  }
+  if(itemInfo.itemRating <= 5){
+    return "redRatingClass"
+  }
+})
+
 
 
 
@@ -77,8 +89,7 @@ const alternativeImage = () => {
         {{itemInfo.itemName}}
       </h3>
       <div class="card-content">
-        <div class="card-stars" v-if="itemInfo.itemRating">
-          <img src="@/assets/icons/star.svg" alt="stars">
+        <div class="card-stars" :class="cardRatingClass" v-if="itemInfo.itemRating">
           <span class="card-rating">
               {{itemInfo.itemRating}}
             </span>
@@ -135,7 +146,16 @@ const alternativeImage = () => {
 }
 .card-stars{
   display: flex;
-  gap: 4px;
+  padding: 2px 7px;
+}
+.greenRatingClass{
+  background-color: forestgreen;
+}
+.yellowRatingClass{
+  background-color: #F3C308;
+}
+.redRatingClass{
+  background-color: red;
 }
 .card-date{
   font-size: 16px;

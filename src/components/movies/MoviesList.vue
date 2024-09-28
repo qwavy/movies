@@ -5,34 +5,49 @@
   import Carousel from "@/components/Carousel.vue";
   import Item from "@/components/Item.vue";
   import {Badge} from "@/components/UI/badge/index.js";
-  import {Moviegenres} from "@/components/movies/constants.js";
   import {Button} from "@/components/UI/button/index.js";
+  import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/UI/accordion/index.js";
   const movieStore = useMovieStore()
 
   onMounted(async () => {
-    await movieStore.getMovies(options)
+    await movieStore.getMovies({})
+    await movieStore.getGenres()
     console.log(movieStore.movies.results)
   })
+
+
 
 
 </script>
 
 <template>
-  <div class="page">
+  <div class="page" v-if="movieStore.movies.length > 1">
     <div class="filters">
-        <div class="genres-list">
-          <Button variant="ghost" v-for="genre in Moviegenres" @click="movieStore.setPickedFilterGenres(genre)" class="genre-button">
-          <Badge variant="outline">
-            {{genre}}
-          </Badge>
-        </Button>
-        </div>
+          <Accordion type="single"  collapsible default-value="not-open" class="inline-block">
+            <AccordionItem value="open" key="opena">
+              <AccordionTrigger>
+                <h3 class="filter-title">
+                  Genres
+                </h3>
+              </AccordionTrigger>
+              <AccordionContent >
+                <div  class="genres-list">
+                  <Button variant="ghost" v-for="genre in movieStore.filterGenres.genres" @click="movieStore.setPickedFilterGenres(genre)" class="genre-button">
+                    <Badge variant="outline" >
+                      {{genre.name}}
+                    </Badge>
+                  </Button>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
     </div>
     <div class="results">
         <div class="picked-genres-list">
           <Button variant="ghost" v-for="pickedGenres in movieStore.pickedFilterGenres" @click="movieStore.deletePickedFilterGenre(pickedGenres)">
             <Badge variant="outline" >
-              {{pickedGenres}}
+              {{pickedGenres.name}}
             </Badge>
           </Button>
         </div>
@@ -56,8 +71,6 @@
     gap: 10px;
   }
   .item-list{
-    //max-width: 80%;
-    //width: 80%;
     display: grid;
     grid-template-columns: repeat(4,1fr);
     grid-template-rows: repeat(5,1fr);
@@ -69,10 +82,19 @@
     gap: 10px 0;
   }
   .genre-button{
-    margin: auto;
-    width: 80px;
+    cursor: pointer;
+    width: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
   .picked-genres-list{
     height: 40px;
+  }
+  .filter-title{
+    width: 130px;
+    font-size: 25px;
+    font-weight: 600;
   }
 </style>

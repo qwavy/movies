@@ -8,7 +8,7 @@ import {options} from "@/constants/index.js";
 import {getAgeFromBirthDate} from "@/lib/utils.js";
 import Carousel from "@/components/Carousel.vue";
 
-// import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 
 import Item from "@/components/Item.vue";
 import Loader from "@/components/UI/loader/Loader.vue";
@@ -100,8 +100,9 @@ const gender = computed(() => {
           </p>
         </div>
         <div>
-          <Accordion type="single" class="w-full" collapsible :default-value="defaultValue">
-            <AccordionItem >
+
+          <Accordion type="single" class="w-full" collapsible default-value="not-open">
+            <AccordionItem value="open" key="opena">
               <AccordionTrigger>
                 <h3 class="personal-info-title">
                   Also known as

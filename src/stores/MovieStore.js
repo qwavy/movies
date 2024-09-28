@@ -14,20 +14,25 @@ export const useMovieStore = defineStore("moviesStore",{
         apiUrls:{
             urlMovies:"https://api.themoviedb.org/3/discover/movie",
             urlMoviesTheDay:"https://api.themoviedb.org/3/trending/movie/day?language=en-US",
-            urlMoviesTheWeek:"https://api.themoviedb.org/3/trending/movie/week?language=en-US"
+            urlMoviesTheWeek:"https://api.themoviedb.org/3/trending/movie/week?language=en-US",
+            urlFilterGenres:"https://api.themoviedb.org/3/genre/movie/list"
         },
+        filterGenres:[
+
+        ],
         pickedFilterGenres:[
         ]
     }),
     actions:{
-        async getMovies(){
-            await fetchData(this, this.apiUrls.urlMoviesTheDay , options, "movies")
+        async getMovies(params){
+            await fetchData(this, this.apiUrls.urlMovies , {with_genres: '28,12'} ,"movies")
         },
-        async getMoviesDay(options){
-            await fetchData(this, this.apiUrls.urlMoviesTheDay , options, "trendingMoviesOfTheDay")
+        async getMoviesDay(){
+            await fetchData(this, this.apiUrls.urlMoviesTheDay ,{}, "trendingMoviesOfTheDay")
+
         },
-        async getMoviesWeek(options){
-            await fetchData(this, this.apiUrls.urlMoviesTheWeek , options, "trendingMoviesOfTheWeek")
+        async getMoviesWeek(){
+            await fetchData(this, this.apiUrls.urlMoviesTheWeek ,{},  "trendingMoviesOfTheWeek")
         },
         async getActorsOfMovie(url,options){
             this.isLoading = true
@@ -40,6 +45,9 @@ export const useMovieStore = defineStore("moviesStore",{
             const result = await axios.get(url , options)
             this.movie = result.data
             this.isLoading = false
+        },
+        async getGenres(options){
+            await fetchData(this, this.apiUrls.urlFilterGenres, options, "filterGenres")
         },
         setPickedFilterGenres(genre){
             if(this.pickedFilterGenres.includes(genre)){

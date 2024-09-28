@@ -21,9 +21,14 @@ export function getAgeFromBirthDate(birthDateString,deathDate = null) {
     return age
 }
 
-export async function fetchData(store, url, options, dataKey){
+import {options} from "@/constants/index.js";
+
+export async function fetchData(store, url, params, dataKey){
     try{
-        const result = await axios.get(url,options)
+        const result = await axios.get(url,{
+            ...options,
+            params
+        })
         store[dataKey] = result.data
     }catch (e){
         console.log(e)
