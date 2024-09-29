@@ -5,16 +5,20 @@ const props = defineProps({
     type:Object,
     required:true
   },
+  typeItem:{
+    type:String
+  }
 })
 
 const itemInfo = reactive({
+
 })
 const {item} = toRefs(props)
 const image = ref()
 
 
 const updateItemInfo = () => {
-  if(item.value?.media_type === "movie" ){
+  if(item.value?.media_type === "movie" || props.typeItem === "movie"){
     Object.assign( itemInfo, {
       url:"movie",
       itemId: props.item.id,
@@ -54,10 +58,10 @@ const updateItemInfo = () => {
   }
   image.value = `https://image.tmdb.org/t/p/w300_and_h450_bestv2${itemInfo.itemImage}`
 }
+
 watchEffect(() => {
   updateItemInfo();
 })
-
 
 const cardRatingClass = computed(() => {
   if(itemInfo.itemRating >= 7){

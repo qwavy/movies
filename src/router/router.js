@@ -23,7 +23,7 @@ const routes = [
         component: MainPage
     },
     {
-        path: "/movies",
+        path: "/movies/:with_genres?",
         component: MoviesList
     },
     {

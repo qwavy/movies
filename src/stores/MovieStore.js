@@ -25,7 +25,7 @@ export const useMovieStore = defineStore("moviesStore",{
     }),
     actions:{
         async getMovies(params){
-            await fetchData(this, this.apiUrls.urlMovies , {with_genres: '28,12'} ,"movies")
+            await fetchData(this, this.apiUrls.urlMovies , params ,"movies")
         },
         async getMoviesDay(){
             await fetchData(this, this.apiUrls.urlMoviesTheDay ,{}, "trendingMoviesOfTheDay")

@@ -1,5 +1,5 @@
 <script setup>
-  import {onMounted} from "vue";
+import {nextTick, onMounted, watch, watchEffect} from "vue";
   import {useMovieStore} from "@/stores/MovieStore.js";
   import {options} from "@/constants/index.js";
   import Carousel from "@/components/Carousel.vue";
@@ -7,21 +7,32 @@
   import {Badge} from "@/components/UI/badge/index.js";
   import {Button} from "@/components/UI/button/index.js";
   import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/UI/accordion/index.js";
-  const movieStore = useMovieStore()
+import {useRoute, useRouter} from "vue-router";
 
-  onMounted(async () => {
+  const movieStore = useMovieStore()
+  const route = useRoute()
+  const router = useRouter()
+
+onMounted(async () => {
     await movieStore.getMovies({})
     await movieStore.getGenres()
     console.log(movieStore.movies.results)
   })
 
+  watch(movieStore.pickedFilterGenres,(async (value, oldValue, onCleanup) => {
+    const pickedGenres = value.map((el) => el.id).join(",")
+    await router.push({ path: `/movies/with_genres=${pickedGenres}` })
+    console.log(route.params.with_genres)
 
+
+    await movieStore.getMovies()
+  }))
 
 
 </script>
 
 <template>
-  <div class="page" v-if="movieStore.movies.length > 1">
+  <div class="page">
     <div class="filters">
           <Accordion type="single"  collapsible default-value="not-open" class="inline-block">
             <AccordionItem value="open" key="opena">
@@ -52,7 +63,7 @@
           </Button>
         </div>
       <div class="item-list">
-        <Item :item="item" v-for="item in movieStore.movies.results"/>
+        <Item v-for="item in movieStore.movies.results" :item="item" typeItem="movie"/>
       </div>
     </div>
   </div>
