@@ -23,7 +23,7 @@ const routes = [
         component: MainPage
     },
     {
-        path: "/movies/:with_genres?",
+        path: "/movies/:filters?",
         component: MoviesList
     },
     {

@@ -1,5 +1,5 @@
 <script setup>
-import {nextTick, onMounted, watch, watchEffect} from "vue";
+import {nextTick, onMounted, reactive, ref, watch, watchEffect} from "vue";
   import {useMovieStore} from "@/stores/MovieStore.js";
   import {options} from "@/constants/index.js";
   import Carousel from "@/components/Carousel.vue";
@@ -13,20 +13,37 @@ import {useRoute, useRouter} from "vue-router";
   const route = useRoute()
   const router = useRouter()
 
+  const params = reactive({
+
+  })
+
+
 onMounted(async () => {
     await movieStore.getMovies({})
     await movieStore.getGenres()
-    console.log(movieStore.movies.results)
+
+  console.log(Object.keys(route.query))
+
+  movieStore.filterGenres.genres.filter((el) => route.query.with_genres.includes(el.id)).forEach((el) => {
+    movieStore.setPickedFilterGenres(el)
+  })
+  const pickedGenres = movieStore.pickedFilterGenres.map((el) => el.id).join(",")
+  params.with_genres = pickedGenres
+
   })
 
   watch(movieStore.pickedFilterGenres,(async (value, oldValue, onCleanup) => {
     const pickedGenres = value.map((el) => el.id).join(",")
-    await router.push({ path: `/movies/with_genres=${pickedGenres}` })
-    console.log(route.params.with_genres)
+    params.with_genres = pickedGenres
 
+    await router.push({
+      path: '/movies',
+      query:params
+    })
 
-    await movieStore.getMovies()
-  }))
+    await movieStore.getMovies(params)
+
+  }),)
 
 
 </script>

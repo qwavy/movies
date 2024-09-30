@@ -56,7 +56,7 @@ export const useMovieStore = defineStore("moviesStore",{
             this.pickedFilterGenres.push(genre)
         },
         deletePickedFilterGenre(genre){
-            this.pickedFilterGenres = this.pickedFilterGenres.filter((el) => el !== genre)
+            this.pickedFilterGenres.splice(this.pickedFilterGenres.indexOf(genre),1)
         }
     }
 
