@@ -20,7 +20,7 @@ export const useMovieStore = defineStore("moviesStore",{
         filterGenres:[
 
         ],
-        pickedFilterGenres:[
+        pickedFilters:[
         ]
     }),
     actions:{
@@ -49,14 +49,14 @@ export const useMovieStore = defineStore("moviesStore",{
         async getGenres(options){
             await fetchData(this, this.apiUrls.urlFilterGenres, options, "filterGenres")
         },
-        setPickedFilterGenres(genre){
-            if(this.pickedFilterGenres.includes(genre)){
+        setPickedFilters(genre){
+            if(this.pickedFilters.includes(genre)){
                 return
             }
-            this.pickedFilterGenres.push(genre)
+            this.pickedFilters.push(genre)
         },
-        deletePickedFilterGenre(genre){
-            this.pickedFilterGenres.splice(this.pickedFilterGenres.indexOf(genre),1)
+        deletePickedFilters(genre){
+            this.pickedFilters.splice(this.pickedFilters.indexOf(genre),1)
         }
     }
 

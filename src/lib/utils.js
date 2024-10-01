@@ -21,6 +21,10 @@ export function getAgeFromBirthDate(birthDateString,deathDate = null) {
     return age
 }
 
+export function getDateFromYear(year){
+    return `${year}-01-01`
+}
+
 import {options} from "@/constants/index.js";
 
 export async function fetchData(store, url, params, dataKey){

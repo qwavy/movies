@@ -8,42 +8,68 @@ import {nextTick, onMounted, reactive, ref, watch, watchEffect} from "vue";
   import {Button} from "@/components/UI/button/index.js";
   import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/UI/accordion/index.js";
 import {useRoute, useRouter} from "vue-router";
+import {Input} from "@/components/UI/input/index.js";
+import {getDateFromYear} from "@/lib/utils.js";
 
   const movieStore = useMovieStore()
   const route = useRoute()
   const router = useRouter()
 
-  const params = reactive({
+  const query = reactive({
 
   })
+
+  const relaseYearStart = ref(route.query['primary_release_date.gte'])
+  const relaseYearEnd = ref(route.query['primary_release_date.lte'])
 
 
 onMounted(async () => {
     await movieStore.getMovies({})
     await movieStore.getGenres()
 
+  console.log(route.query)
+
+
   console.log(Object.keys(route.query))
 
   movieStore.filterGenres.genres.filter((el) => route.query.with_genres.includes(el.id)).forEach((el) => {
-    movieStore.setPickedFilterGenres(el)
+    movieStore.setPickedFilters(el)
   })
-  const pickedGenres = movieStore.pickedFilterGenres.map((el) => el.id).join(",")
-  params.with_genres = pickedGenres
+  const pickedGenres = movieStore.pickedFilters.map((el) => el.id).join(",")
+  query.with_genres = pickedGenres
 
   })
 
-  watch(movieStore.pickedFilterGenres,(async (value, oldValue, onCleanup) => {
+  watch(movieStore.pickedFilters,(async (value, oldValue, onCleanup) => {
     const pickedGenres = value.map((el) => el.id).join(",")
-    params.with_genres = pickedGenres
+    query.with_genres = pickedGenres
 
     await router.push({
       path: '/movies',
-      query:params
+      query:query
     })
 
-    await movieStore.getMovies(params)
-
+    await movieStore.getMovies(query)
   }),)
+
+  watch(relaseYearStart, async (value, oldValue, onCleanup) => {
+    query['primary_release_date.gte'] = getDateFromYear(value)
+
+    await router.push({
+      path: '/movies',
+      query:query
+    })
+    await movieStore.getMovies(query)
+  })
+
+watch(relaseYearEnd, async (value, oldValue, onCleanup) => {
+  query['primary_release_date.lte'] = getDateFromYear(value)
+  await router.push({
+    path: '/movies',
+    query:query
+  })
+  await movieStore.getMovies(query)
+})
 
 
 </script>
@@ -51,6 +77,18 @@ onMounted(async () => {
 <template>
   <div class="page">
     <div class="filters">
+      <div class="release-years-filter">
+        <h3 class="filter-title">
+          Release year
+        </h3>
+        <div class="inputs">
+          <Input type="number" v-model="relaseYearStart"/>
+          <p class="filter-names">
+            to
+          </p>
+          <Input type="number" v-model="relaseYearEnd" />
+        </div>
+      </div>
           <Accordion type="single"  collapsible default-value="not-open" class="inline-block">
             <AccordionItem value="open" key="opena">
               <AccordionTrigger>
@@ -60,7 +98,7 @@ onMounted(async () => {
               </AccordionTrigger>
               <AccordionContent >
                 <div  class="genres-list">
-                  <Button variant="ghost" v-for="genre in movieStore.filterGenres.genres" @click="movieStore.setPickedFilterGenres(genre)" class="genre-button">
+                  <Button variant="ghost" v-for="genre in movieStore.filterGenres.genres" @click="movieStore.setPickedFilters(genre)" class="genre-button">
                     <Badge variant="outline" >
                       {{genre.name}}
                     </Badge>
@@ -73,7 +111,7 @@ onMounted(async () => {
     </div>
     <div class="results">
         <div class="picked-genres-list">
-          <Button variant="ghost" v-for="pickedGenres in movieStore.pickedFilterGenres" @click="movieStore.deletePickedFilterGenre(pickedGenres)">
+          <Button variant="ghost" v-for="pickedGenres in movieStore.pickedFilters" @click="movieStore.deletePickedFilters(pickedGenres)">
             <Badge variant="outline" >
               {{pickedGenres.name}}
             </Badge>
@@ -124,5 +162,22 @@ onMounted(async () => {
     width: 130px;
     font-size: 25px;
     font-weight: 600;
+  }
+  .release-years-filter{
+    width: 130px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .inputs{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .inputs > input{
+    font-size: 15px;
+  }
+  .filter-names{
+    font-size: 15px;
   }
 </style>
