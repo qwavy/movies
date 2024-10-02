@@ -25,7 +25,10 @@ export function getDateFromYear(year){
     return `${year}-01-01`
 }
 export function getYearFromDate(date){
-    return +date.split("-")[0]
+    if(date){
+
+        return +date.split("-")[0]
+    }
 }
 
 import {options} from "@/constants/index.js";

@@ -15,9 +15,7 @@ import {getDateFromYear, getYearFromDate} from "@/lib/utils.js";
   const route = useRoute()
   const router = useRouter()
 
-  const query = reactive({
-
-  })
+  const query = reactive({})
 
   const relaseYearStart = ref(getYearFromDate(route.query['primary_release_date.gte']))
   const relaseYearEnd = ref(getYearFromDate(route.query['primary_release_date.lte']))
@@ -31,7 +29,6 @@ onMounted(async () => {
 
   Object.keys(route.query).forEach((el) => {
     if(!route.query[el]){
-      route.query[el]=35
       console.log(route.query[el])
       // delete route.query[el]
     }
@@ -39,12 +36,17 @@ onMounted(async () => {
     console.log(query[el])
   })
 
-  movieStore.filterGenres.genres.filter((el) => route.query.with_genres.includes(el.id)).forEach((el) => {
-    movieStore.setPickedFilters(el)
-  })
+  if(route.query['with_genres']){
+    movieStore.filterGenres.genres.filter((el) => route.query.with_genres.includes(el.id)).forEach((el) => {
+      movieStore.setPickedFilters(el)
+    })
 
-  const pickedGenres = movieStore.pickedFilters.map((el) => el.id).join(",")
-  query.with_genres = pickedGenres
+    const pickedGenres = movieStore.pickedFilters.map((el) => el.id).join(",")
+    query.with_genres = pickedGenres
+  }
+
+
+
 
   console.log(query)
   console.log(route.query)
