@@ -9,7 +9,7 @@ import {nextTick, onMounted, reactive, ref, watch, watchEffect} from "vue";
   import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/UI/accordion/index.js";
 import {useRoute, useRouter} from "vue-router";
 import {Input} from "@/components/UI/input/index.js";
-import {getDateFromYear} from "@/lib/utils.js";
+import {getDateFromYear, getYearFromDate} from "@/lib/utils.js";
 
   const movieStore = useMovieStore()
   const route = useRoute()
@@ -19,24 +19,37 @@ import {getDateFromYear} from "@/lib/utils.js";
 
   })
 
-  const relaseYearStart = ref(route.query['primary_release_date.gte'])
-  const relaseYearEnd = ref(route.query['primary_release_date.lte'])
-
+  const relaseYearStart = ref(getYearFromDate(route.query['primary_release_date.gte']))
+  const relaseYearEnd = ref(getYearFromDate(route.query['primary_release_date.lte']))
+  console.log(route.query['primary_release_date.lte'])
 
 onMounted(async () => {
     await movieStore.getMovies({})
     await movieStore.getGenres()
 
-  console.log(route.query)
 
 
-  console.log(Object.keys(route.query))
+  Object.keys(route.query).forEach((el) => {
+    if(!route.query[el]){
+      route.query[el]=35
+      console.log(route.query[el])
+      // delete route.query[el]
+    }
+    query[el] = route.query[el]
+    console.log(query[el])
+  })
 
   movieStore.filterGenres.genres.filter((el) => route.query.with_genres.includes(el.id)).forEach((el) => {
     movieStore.setPickedFilters(el)
   })
+
   const pickedGenres = movieStore.pickedFilters.map((el) => el.id).join(",")
   query.with_genres = pickedGenres
+
+  console.log(query)
+  console.log(route.query)
+  await movieStore.getMovies(query)
+
 
   })
 
@@ -62,14 +75,14 @@ onMounted(async () => {
     await movieStore.getMovies(query)
   })
 
-watch(relaseYearEnd, async (value, oldValue, onCleanup) => {
-  query['primary_release_date.lte'] = getDateFromYear(value)
-  await router.push({
-    path: '/movies',
-    query:query
+  watch(relaseYearEnd, async (value, oldValue, onCleanup) => {
+    query['primary_release_date.lte'] = getDateFromYear(value)
+    await router.push({
+      path: '/movies',
+      query:query
+    })
+    await movieStore.getMovies(query)
   })
-  await movieStore.getMovies(query)
-})
 
 
 </script>
@@ -107,7 +120,6 @@ watch(relaseYearEnd, async (value, oldValue, onCleanup) => {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-
     </div>
     <div class="results">
         <div class="picked-genres-list">
